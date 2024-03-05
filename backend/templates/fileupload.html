@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{%block content%}
+<link href="https://releases.transloadit.com/uppy/v2.2.3/uppy.min.css" rel="stylesheet">
+
+<form method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button>Upload</button>
+    <div id="drag-drop-area"></div>
+
+    
+</form>
+<script src="https://releases.transloadit.com/uppy/v2.2.3/uppy.min.js"></script>
+
+<script>
+    document.getElementById('files').setAttribute('multiple', true);
+     
+</script>
+
+{%endblock content%}
