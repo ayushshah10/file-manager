@@ -6,12 +6,14 @@
 
 <h3>{{message}}</h3>
 <div class="col-12 col-sm-6 col-md-9 border p-4">
-    <h3 >Upload History by each user</h3>
+    <h3>Upload History by each user</h3>
     {% for file in files%}
     {{file.user}}: <a href="media/{{file.file}}" style="padding-right: 30px;">{{file.file}}</a>
     <a href="{%url 'delete' file.id%}" class="btn btn-success">DELETE</a>
     
     <br>
+
     {% endfor%}
   </div>
+  <a href="{%url 'upload_file'%} " class="btn btn-success">Upload more</a>
 {%endblock content%}

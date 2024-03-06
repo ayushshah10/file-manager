@@ -11,7 +11,6 @@ from django.core.files.storage import default_storage
 
 def home(request):
     allfiles = FileUpload.objects.all()
-
     return render(request,'home.html',{'files':allfiles})
 
 
@@ -54,6 +53,7 @@ def Logout(request):
 
 @login_required(login_url='/login')
 def upload(request):
+    message = ''
     if request.method == 'POST':
             form = FileUploadForm(request.POST, request.FILES)
             if form.is_valid():
@@ -61,7 +61,7 @@ def upload(request):
 
                 for file in files:
                     if file.size > 20000000 :
-                      return HttpResponse('filesize must be less than 20MB')
+                        return render(request,'fileupload.html',{'form': form,'message' :'Size must be less than 20MB'})
                     FileUpload.objects.create(file=file, user=request.user)
 
                 return redirect('home')
@@ -77,7 +77,6 @@ def f_delete(request,id):
 
     temp=str(request.user.username) 
     temp1=str(obj.user)
-    print(temp,temp1)
     if temp == temp1:
         media_path = obj.file.path
         obj.delete()
@@ -85,6 +84,4 @@ def f_delete(request,id):
             default_storage.delete(media_path)
     else:
         return render(request,'home.html',{'files':allfiles,'message':'You have no right to remove this file'})
-    # f = FileUpload.objects.get(id=id)
-    # f.delete()
     return redirect('home')

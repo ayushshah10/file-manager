@@ -2,22 +2,90 @@
 {% load crispy_forms_tags %}
 
 {%block content%}
-<link href="https://releases.transloadit.com/uppy/v2.2.3/uppy.min.css" rel="stylesheet">
-
-<form method="post" enctype="multipart/form-data" >
+ 
+<h1>UPLOAD YOUR FILES</h1>
+<form method="post" enctype="multipart/form-data" id="upload-form">
     {% csrf_token %}
     {{ form.as_p }}
     <br>
     <button>Upload</button>
-    <div id="drag-drop-area"></div>
+    <div id="progress-box" style="display: none;">
+        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+          <div class="progress-bar" style="width: 0%"></div>
+        </div>
+        <div id="progress-text">0%</div>
+    </div>
+    <p>{{message}}</p>
 
+    <a class='btn btn-success' href="{%url 'home'%}">Show all uploaded files</a>
     
-</form>
-<script src="https://releases.transloadit.com/uppy/v2.2.3/uppy.min.js"></script>
+</form> 
 
+  
+  <!-- <script>
+    document.getElementById('files').setAttribute('multiple', true);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('upload-form');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); 
+                uploadFile(); 
+            });
+        } else {
+            console.error('Form element with ID "upload-form" not found.');
+        }
+    });
+
+    function uploadFile() {
+        const fileInput = document.getElementById('files');
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+            const formData = new FormData();
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            formData.append('csrfmiddlewaretoken', csrftoken);
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+            const xhr = new XMLHttpRequest();
+            const progressBarContainer = document.getElementById('progress-box');
+            const progressBar = document.querySelector('.progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            xhr.open('POST', '/', true);
+
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percentage = (e.loaded / e.total) * 100;
+                    progressBar.style.width = percentage + '%';
+                    progressText.innerHTML = percentage.toFixed(0) + '%';
+                }
+            };
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    progressBarContainer.style.display = 'none';
+                    if (xhr.status === 200) {
+                        
+                        location.reload();
+                        window.location.replace('/')
+                    } else {
+                        alert('Error uploading file: ' + xhr.status);
+                    }
+                }
+            };
+
+            progressBarContainer.style.display = 'block';
+            xhr.send(formData);
+        } else {
+            alert('Please select one or more files to upload.');
+        }
+    }
+</script>  -->
 <script>
     document.getElementById('files').setAttribute('multiple', true);
-     
 </script>
-
 {%endblock content%}
